@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+		<param name="follow" value="true"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} %C %M[%L]%n%-5p: %m%n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMin" value="TRACE" />
+			<param name="LevelMax" value="FATAL" />
+		</filter>
+	</appender>
+
+	<appender name="NOOP" class="org.apache.log4j.varia.NullAppender">
+	</appender>
+
+	<appender name="DEBUG" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="logs/sylla_debug.log" />
+		<param name="Append" value="true" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} %C %M[%L]%n%-5p: %m%n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMin" value="TRACE" />
+			<param name="LevelMax" value="DEBUG" />
+		</filter>
+	</appender>
+
+	<appender name="INFO" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="logs/sylla_info.log" />
+		<param name="Append" value="true" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} %C %M[%L]%n%-5p: %m%n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMin" value="INFO" />
+			<param name="LevelMax" value="INFO" />
+		</filter>
+	</appender>
+
+
+	<appender name="ERROR" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="logs/sylla_error.log" />
+		<param name="Append" value="true" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} %C %M[%L]%n%-5p: %m%n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="LevelMin" value="WARN" />
+			<param name="LevelMax" value="FATAL" />
+		</filter>
+	</appender>
+
+	<category name="org.apache.commons.beanutils">
+		<priority value="ERROR" />
+	</category>
+
+	<category name="org.apache.commons.digester">
+		<priority value="ERROR" />
+	</category>
+
+	<category name="org.hibernate">
+		<priority value="ERROR" />
+	</category>
+
+	<category name="org.hibernate.connection">
+		<priority value="INFO" />
+	</category>
+
+	<category name="org.springframework">
+		<priority value="ERROR" />
+	</category>
+
+	<category name="org.objectweb">
+		<priority value="ERROR" />
+	</category>
+
+	<category name="org.enhydra">
+		<priority value="ERROR" />
+	</category>
+
+	<category name="com.opensymphony">
+		<priority value="ERROR" />
+	</category>
+
+	<category name="org.quartz">
+		<priority value="INFO" />
+	</category>
+
+	<category name="org.apache.commons.digester">
+		<priority value="ERROR" />
+	</category>
+
+	<category name="com.ctreber.aclib">
+		<priority value="ERROR" />
+	</category>
+
+	<category name="com.sylla">
+		<priority value="INFO" />
+	</category>
+
+	<root>
+		<priority value="INFO" />
+		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="INFO" />
+		<appender-ref ref="ERROR" />
+	</root>
+</log4j:configuration>

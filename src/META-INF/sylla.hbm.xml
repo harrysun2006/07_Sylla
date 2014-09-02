@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="false">
+
+	<class name="com.sylla.Corp" table="CORP" dynamic-update="true" dynamic-insert="true">
+		<id name="id" column="CORP_ID">
+			<generator class="assigned"/>
+		</id>
+		<property name="regNo" column="CORP_RegNo"/>
+		<property name="name1" column="CORP_Name1"/>
+		<property name="name2" column="CORP_Name2"/>
+		<property name="owner" column="CORP_Owner"/>
+		<property name="address" column="CORP_Addr"/>
+		<property name="capital" column="CORP_Cap"/>
+		<property name="scope" column="CORP_Scope"/>
+		<property name="telephone" column="CORP_Tel"/>
+		<property name="postCode" column="CORP_PostCode"/>
+		<property name="industry" column="CORP_Industry"/>
+		<property name="precinct" column="CORP_Precinct"/>
+		<property name="createDate1" column="CORP_CreateDate1"/>
+		<property name="createDate2" column="CORP_CreateDate2"/>
+		<property name="regOrgan" column="CORP_RegOrgan"/>
+		<property name="category" column="CORP_Category"/>
+		<property name="page" column="CORP_Page"/>
+		<property name="pageIndex" column="CORP_PageIdx"/>
+		<property name="status" column="CORP_Status"/>
+		<property name="index" column="CORP_Idx" insert="false" update="false"/>
+		<property name="type" column="CORP_Type"/>
+	</class>
+
+	<class name="com.sylla.Image" table="IMG" dynamic-update="true" dynamic-insert="true" optimistic-lock="none">
+		<id name="code" column="IMG_Code">
+			<generator class="assigned"/>
+		</id>
+		<property name="text" column="IMG_Text"/>
+		<property name="accurate" column="IMG_Accurate"/>
+		<property name="status" column="IMG_Status"/>
+		<property name="index" column="IMG_Idx" insert="false" update="false"/>
+		<property name="type" column="IMG_Type" insert="false" update="false"/>
+	</class>
+
+	<class name="com.sylla.Info" table="INFO" dynamic-update="true" dynamic-insert="true">
+		<composite-id name="id" class="com.sylla.InfoPK">
+			<key-property name="corpId" column="INFO_CorpID"/>
+			<key-property name="type" column="INFO_Type"/>
+		</composite-id>
+		<property name="code" column="INFO_Code"/>
+		<property name="status" column="INFO_Status"/>
+		<property name="index" column="INFO_Idx" insert="false" update="false"/>
+	</class>
+
+	<class name="com.sylla.Page" table="PAGE" dynamic-update="true" dynamic-insert="true">
+		<composite-id name="id" class="com.sylla.PagePK">
+			<key-property name="pageId" column="PAGE_ID"/>
+			<key-property name="type" column="PAGE_Type"/>
+		</composite-id>
+		<property name="status" column="PAGE_Status"/>
+		<property name="index" column="PAGE_Idx" insert="false" update="false"/>
+	</class>
+
+	<class name="com.sylla.T1" table="T1" dynamic-update="true" dynamic-insert="true">
+		<id name="name" column="Name">
+			<generator class="assigned"/>
+		</id>
+		<property name="index" column="Idx" insert="false" update="false"/>
+	</class>
+	<!--sql-query name="DATABASE_LANG">
+		<return-scalar column="LANG" type="string"/>
+		SELECT @@LANGUAGE AS LANG
+	</sql-query-->
+
+</hibernate-mapping>

@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<!-- Spring bean factory post processors -->
+	<bean class="com.sylla.spring.BeanFactorySyllaProcessor"/>
+
+	<bean id="restartTransactionInterceptor" class="com.sylla.spring.RestartTransactionAdviser"/>
+
+	<bean id="defaultLobHandler" class="org.springframework.jdbc.support.lob.DefaultLobHandler" lazy-init="true"/>
+
+	<!-- sylla DataSource, Hibernate SessionFactory & Transaction Manager -->
+	<bean id="syllaDataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName"><value>java:comp/env/jdbc/SyllaPool</value></property>
+	</bean>
+	<bean id="syllaHibernateProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="properties">
+			<props>
+				<!--prop key="hibernate.hbm2ddl.auto">create</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop-->
+				<prop key="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.cache.provider_class">com.sylla.spring.OSCacheProvider</prop>
+				<!--prop key="hibernate.cache.provider_class">net.sf.hibernate.cache.HashtableCacheProvider</prop-->
+				<prop key="net.sf.ehcache.configurationResourceName">META-INF/hibernate.xml</prop>
+				<prop key="hibernate.cache.use_query_cache">true</prop>
+				<prop key="hibernate.cache.use_second_level_cache">true</prop>
+				<prop key="hibernate.cache.use_minimal_puts">true</prop>
+				<prop key="hibernate.cache.use_structured_entries">false</prop>
+				<!-- To disable the cache, uncomment the following lines
+				<prop key="hibernate.cache.provider_class">org.hibernate.cache.NoCacheProvider</prop>
+				<prop key="hibernate.cache.use_query_cache">false</prop>
+				<prop key="hibernate.cache.use_second_level_cache">false</prop>
+				<prop key="hibernate.jdbc.batch_size">20</prop>
+				<prop key="hibernate.jdbc.fetch_size">50</prop>
+				<prop key="hibernate.max_fetch_depth">0</prop>
+				-->
+				<prop key="hibernate.jdbc.use_scrollable_resultset">true</prop>
+				<prop key="hibernate.bytecode.use_reflection_optimizer">true</prop>
+				<prop key="hibernate.query.factory_class">org.hibernate.hql.classic.ClassicQueryTranslatorFactory</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="syllaSessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean" lazy-init="true">
+		<property name="dataSource"><ref local="syllaDataSource"/></property>
+		<property name="lobHandler"><ref local="defaultLobHandler"/></property>
+		<property name="hibernateProperties"><ref local="syllaHibernateProperties"/></property>
+		<!--  OR mapping files. -->
+		<property name="mappingResources">
+			<list>
+				<value>META-INF/sylla.hbm.xml</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="syllaTransactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="dataSource"><ref local="syllaDataSource"/></property>
+		<property name="sessionFactory"><ref local="syllaSessionFactory"/></property>
+	</bean>
+
+	<bean id="syllaTransactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
+		<property name="transactionManager" ref="syllaTransactionManager" />
+		<property name="transactionAttributes">
+			<props>
+				<prop key="*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="autoProxyCreator" class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+    <property name="interceptorNames">
+    	<list>
+    		<idref local="syllaTransactionInterceptor" />
+    	</list>
+    </property>
+    <property name="beanNames">
+    	<list>
+    		<idref local="syllaService" />
+    	</list>
+    </property>
+	</bean>
+
+	<!-- Sylla DAO, Service & Util -->
+	<bean id="syllaDAOTarget" class="com.sylla.service.SyllaDAOHibernate">
+		<property name="sessionFactory">
+			<ref local="syllaSessionFactory"/>
+		</property>
+	</bean>
+	<bean id="syllaDAO" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="target">
+			<ref local="syllaDAOTarget"/>
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<value>restartTransactionInterceptor</value>
+			</list>
+		</property>
+	</bean> 
+	<bean id="syllaService" class="com.sylla.service.SyllaService">
+		<property name="syllaDAO"><ref local="syllaDAO"/></property>
+	</bean>
+
+	<bean id="syllaServiceUtil" class="com.sylla.service.SyllaServiceUtil" lazy-init="true">
+		<property name="syllaService"><ref local="syllaService"/></property>
+	</bean>
+
+</beans>
