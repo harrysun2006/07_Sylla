@@ -15,7 +15,6 @@
 	<classpathentry kind="lib" path="lib/commons-logging-1.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/concurrent.jar"/>
 	<classpathentry kind="lib" path="lib/cssparser-0.9.5.jar"/>
-	<classpathentry kind="lib" path="lib/dom4j.jar"/>
 	<classpathentry kind="lib" path="lib/jgroups-all.jar"/>
 	<classpathentry kind="lib" path="lib/jtds-1.2.2.jar"/>
 	<classpathentry kind="lib" path="lib/log4j-1.2.13.jar"/>
@@ -25,13 +24,14 @@
 	<classpathentry kind="lib" path="lib/xalan-2.7.0.jar"/>
 	<classpathentry kind="lib" path="lib/xercesImpl-2.8.1.jar"/>
 	<classpathentry kind="lib" path="lib/xml-apis-1.0.b2.jar"/>
-	<classpathentry kind="lib" path="lib/htmlunit-2.3.jar"/>
-	<classpathentry kind="lib" path="lib/htmlunit-core-js-2.2.jar"/>
 	<classpathentry kind="lib" path="lib/spring.jar"/>
 	<classpathentry kind="lib" path="lib/naming-factory.jar"/>
 	<classpathentry kind="lib" path="lib/naming-factory-dbcp.jar"/>
 	<classpathentry kind="lib" path="lib/naming-resources.jar"/>
 	<classpathentry kind="lib" path="lib/jawin.jar"/>
 	<classpathentry kind="lib" path="lib/jawindemos.jar"/>
+	<classpathentry kind="lib" path="lib/dom4j.jar"/>
+	<classpathentry kind="lib" path="lib/htmlunit-2.3.jar"/>
+	<classpathentry kind="lib" path="lib/htmlunit-core-js-2.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
